@@ -109,8 +109,20 @@ export default function MentorLoginPage() {
   }, [cooldownSeconds]);
 
   useEffect(() => {
+    // Listen for unregistered Google Account error from URL
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const err = params.get('error');
+      const errEmail = params.get('email');
+      if (err === 'unregistered_google_account') {
+        const emailMsg = errEmail ? ` (${errEmail})` : '';
+        setError(`Access Denied: Your Google Account${emailMsg} is not registered in AI Institute database. Please click "Set Up Mentor Profile" below to configure your faculty account first.`);
+        setIsLogin(false); // Auto switch to registration tab!
+      }
+    }
+
     if (authReady && isAuthenticated) {
-      router.push('/portal');
+      router.push('/portal?tab=dashboard');
     }
   }, [authReady, isAuthenticated, router]);
 

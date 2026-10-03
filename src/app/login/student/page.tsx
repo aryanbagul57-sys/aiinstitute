@@ -75,6 +75,18 @@ export default function StudentLoginPage() {
   }, [cooldownSeconds]);
 
   useEffect(() => {
+    // Listen for unregistered Google Account error from URL
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const err = params.get('error');
+      const errEmail = params.get('email');
+      if (err === 'unregistered_google_account') {
+        const emailMsg = errEmail ? ` (${errEmail})` : '';
+        setError(`Access Denied: Your Google Account${emailMsg} is not registered in AI Institute database. Please click "Upload Photo & Setup Profile" below to create your student account first.`);
+        setIsLogin(false); // Auto switch to registration tab!
+      }
+    }
+
     if (authReady && isAuthenticated) {
       router.push('/portal?tab=classroom');
     }

@@ -44,56 +44,96 @@ export async function POST(req: NextRequest) {
     ];
     const isDefaultMentor = defaultMentorEmails.includes(accountIdentifier);
 
-    let isAuthenticated = false;
-    let authUser: any = null;
-    let authErrorMsg = '';
-
-    // Step A: Attempt Supabase Auth Password Sign In
+    // Step 1: Query Supabase DB 'profiles' table first to guarantee database registration!
+    let dbProfile: any = null;
     try {
-      const { data: authData } = await supabase.auth.signInWithPassword({
-        email: accountIdentifier,
-        password: inputPassword,
-      });
-
-      if (authData?.user) {
-        isAuthenticated = true;
-        authUser = {
-          id: authData.user.id,
-          email: authData.user.email,
-          fullName: authData.user.user_metadata?.full_name || accountIdentifier.split('@')[0],
-          role: authData.user.user_metadata?.role || role || 'student',
-        };
-      }
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .ilike('email', accountIdentifier)
+        .single();
+      if (profile) dbProfile = profile;
     } catch (e) {}
 
-    // Step B: If Supabase Auth didn't match, query Supabase DB 'profiles' table
+    // STRICT SECURITY GUARD 1: IF NOT REGISTERED IN DATABASE & NOT DEFAULT FACULTY -> REJECT IMMEDIATELY!
+    if (!dbProfile && !isDefaultMentor) {
+      const failure = recordAuthFailure(ip, accountIdentifier);
+      const errorMessage = role === 'mentor'
+        ? `Access Denied: ${accountIdentifier} is not registered in AI Institute database. Please click "Set Up Mentor Profile" below to configure your account first.`
+        : `Access Denied: ${accountIdentifier} is not registered in AI Institute database. Please click "Upload Photo & Setup Profile" below to enroll first.`;
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: errorMessage,
+          rateLimit: {
+            failedAttempts: failure.failedAttempts,
+            backoffDelayMs: failure.backoffDelayMs,
+            retryAfterSeconds: Math.ceil(failure.backoffDelayMs / 1000),
+          },
+        },
+        { status: 401 }
+      );
+    }
+
+    // STRICT SECURITY GUARD 2: ROLE AUTHORIZATION MATCHING
+    const accountRole = dbProfile?.role || (isDefaultMentor ? 'mentor' : 'student');
+    if (role && role !== accountRole) {
+      const failure = recordAuthFailure(ip, accountIdentifier);
+      const errorMessage = role === 'mentor'
+        ? `Role Mismatch: ${accountIdentifier} is registered as a Student, not a Mentor. Please log in through the Student Login portal.`
+        : `Role Mismatch: ${accountIdentifier} is registered as a Mentor. Please log in through the Mentor Login portal.`;
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: errorMessage,
+          rateLimit: {
+            failedAttempts: failure.failedAttempts,
+            backoffDelayMs: failure.backoffDelayMs,
+            retryAfterSeconds: Math.ceil(failure.backoffDelayMs / 1000),
+          },
+        },
+        { status: 403 }
+      );
+    }
+
+    // Step 2: Password Verification against DB profile or Supabase Auth
+    let isAuthenticated = false;
+    let authUser: any = null;
+
+    if (dbProfile) {
+      const expectedPassword = dbProfile.password;
+      if (expectedPassword && expectedPassword === inputPassword) {
+        isAuthenticated = true;
+        authUser = {
+          id: dbProfile.id,
+          email: dbProfile.email,
+          fullName: dbProfile.full_name || dbProfile.name || accountIdentifier.split('@')[0],
+          role: accountRole,
+        };
+      }
+    }
+
     if (!isAuthenticated) {
       try {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .ilike('email', accountIdentifier)
-          .single();
+        const { data: authData } = await supabase.auth.signInWithPassword({
+          email: accountIdentifier,
+          password: inputPassword,
+        });
 
-        if (profile) {
-          // Account exists in DB! Validate password
-          const expectedPassword = profile.password;
-          if (expectedPassword && expectedPassword === inputPassword) {
-            isAuthenticated = true;
-            authUser = {
-              id: profile.id,
-              email: profile.email,
-              fullName: profile.full_name || profile.name,
-              role: profile.role || role || 'student',
-            };
-          } else {
-            authErrorMsg = 'Incorrect password. Please enter the exact password set during registration.';
-          }
+        if (authData?.user) {
+          isAuthenticated = true;
+          authUser = {
+            id: authData.user.id,
+            email: authData.user.email,
+            fullName: authData.user.user_metadata?.full_name || dbProfile?.full_name || accountIdentifier.split('@')[0],
+            role: accountRole,
+          };
         }
       } catch (e) {}
     }
 
-    // Step C: Fallback check for Default Faculty Accounts
     if (!isAuthenticated && isDefaultMentor) {
       if (inputPassword === 'mentor123' || inputPassword === 'aiinstitute123') {
         isAuthenticated = true;
@@ -103,24 +143,16 @@ export async function POST(req: NextRequest) {
           fullName: accountIdentifier.split('@')[0].toUpperCase(),
           role: 'mentor',
         };
-      } else {
-        authErrorMsg = 'Incorrect mentor password. Please enter your authorized faculty password.';
       }
     }
 
-    // Step D: STRICT REJECTION IF NOT AUTHENTICATED
+    // Step 3: Reject if password fails
     if (!isAuthenticated) {
       const failure = recordAuthFailure(ip, accountIdentifier);
-      const errorMessage = authErrorMsg || (
-        role === 'mentor'
-          ? 'No mentor profile found for this email address. Please click "Mentor Profile Setup" to configure your account first.'
-          : 'No registered student account found for this email address. Please click "Student Admission & Registration" below to enroll first.'
-      );
-
       return NextResponse.json(
         {
           success: false,
-          error: errorMessage,
+          error: 'Incorrect password. Please enter the exact password set during registration.',
           rateLimit: {
             failedAttempts: failure.failedAttempts,
             backoffDelayMs: failure.backoffDelayMs,

@@ -425,13 +425,54 @@ export default function PortalPage() {
       // Wait until DatabaseContext has finished resolving auth state
       if (!authReady) return;
 
-      // STRICT AUTH GUARD: only allow portal access if the DatabaseContext has resolved
-      // a valid authenticated session. Stale role-only localStorage keys are NOT enough.
+      // STRICT AUTH & GOOGLE OAUTH SECURITY GUARD:
       const hasValidSession = isAuthenticated || Boolean(rawGUser);
       if (!hasValidSession) {
-        router.push('/login');
+        router.push('/login/student');
         return;
       }
+
+      // Verify Google Account / Session in Supabase Database 'profiles'
+      const checkDatabaseRegistration = async () => {
+        const userEmail = currentUser?.email;
+        if (userEmail) {
+          const supabase = createClient();
+          const defaultFacultyEmails = [
+            'vaibhav.ahire@aiinstitute.in',
+            'siddhi.pawar@aiinstitute.in',
+            'vishwadeep.chavan@aiinstitute.in',
+            'jay.koche@aiinstitute.in',
+            'mentor@aiinstitute.in'
+          ];
+          const isFaculty = defaultFacultyEmails.includes(userEmail.toLowerCase().trim());
+
+          let dbProfile: any = null;
+          try {
+            const { data } = await supabase
+              .from('profiles')
+              .select('*')
+              .ilike('email', userEmail.toLowerCase().trim())
+              .single();
+            if (data) dbProfile = data;
+          } catch (e) {}
+
+          if (!dbProfile && !isFaculty) {
+            // UNREGISTERED GOOGLE ACCOUNT DETECTED!
+            try { await supabase.auth.signOut(); } catch (e) {}
+            localStorage.removeItem('lms_user');
+            localStorage.removeItem('granted_student_user');
+            localStorage.removeItem('lms_mentor_profile');
+            localStorage.removeItem('user_role');
+            localStorage.removeItem('lms_user_logged_in');
+
+            const targetPage = role === 'mentor' ? '/login/mentor' : '/login/student';
+            window.location.href = `${targetPage}?error=unregistered_google_account&email=${encodeURIComponent(userEmail)}`;
+            return;
+          }
+        }
+      };
+
+      checkDatabaseRegistration();
 
       if (rawGUser) {
         try {
