@@ -81,8 +81,39 @@ export const LandingNavbar: React.FC<LandingNavbarProps> = ({ onAccessPortal, cu
       initial={{ y: -100 }} 
       animate={{ y: 0 }} 
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className="fixed top-0 left-0 right-0 z-40 bg-white/85 dark:bg-[#080d1a]/85 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60 transition-all"
+      className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#080d1a]/90 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60 transition-all"
     >
+      {/* KSR-Style Top Announcement / Batch Alert Bar */}
+      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white text-[11px] font-bold py-1.5 px-4 shadow-xs">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 truncate">
+            <span className="flex h-2 w-2 relative shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            </span>
+            <span className="truncate">
+              <strong className="tracking-wide">NEW LIVE BATCH:</strong> Generative AI, Data Science & Full Stack Starting This Week • 100% Placement Support
+            </span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 shrink-0 text-[10px] uppercase tracking-wider font-extrabold">
+            <a 
+              href="#courses" 
+              className="bg-white/15 hover:bg-white/25 px-2.5 py-0.5 rounded-full transition-colors flex items-center gap-1"
+            >
+              <span>Explore Batches</span>
+              <ArrowRight className="w-3 h-3" />
+            </a>
+            <span className="text-blue-200/60">•</span>
+            <a 
+              href="#enroll-track" 
+              className="hover:text-emerald-300 transition-colors"
+            >
+              Request Syllabus
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <img 
@@ -101,7 +132,8 @@ export const LandingNavbar: React.FC<LandingNavbarProps> = ({ onAccessPortal, cu
           <a href="#courses" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Courses</a>
           <a href="#why-choose" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Why AI Institute</a>
           <a href="#mentors" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Top Mentors</a>
-          <a href="#testimonials" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Testimonials</a>
+          <a href="#testimonials" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Placements</a>
+          <a href="#faq" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FAQ</a>
         </nav>
 
         {/* Interactive Search Bar for Mentors & Courses */}
@@ -300,7 +332,15 @@ export const LandingNavbar: React.FC<LandingNavbarProps> = ({ onAccessPortal, cu
                   className="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors flex items-center gap-2"
                 >
                   <Award className="w-4 h-4 text-amber-600" />
-                  <span>Testimonials</span>
+                  <span>Placements &amp; Reviews</span>
+                </a>
+                <a 
+                  href="#faq" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors flex items-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4 text-emerald-500" />
+                  <span>FAQs</span>
                 </a>
               </nav>
 
