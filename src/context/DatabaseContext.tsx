@@ -435,7 +435,7 @@ export const SEED_COURSES: Course[] = [
     category: 'Soft Skills',
     price: 1999,
     originalPrice: 4999,
-    imageUrl: '/uploads/siddhi_pawar.png',
+    imageUrl: '/banners/soft-skills.webp',
     mentorName: 'Siddhi Pawar',
     duration: '40+ Hours',
     rating: 4.9,
@@ -755,6 +755,8 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         ? '/banners/generative-ai.webp'
         : c.id === 'course-cyber-sec'
         ? '/banners/cyber-security.webp'
+        : c.id === 'course-soft-skills'
+        ? '/banners/soft-skills.webp'
         : sanitizeCourseImage(c.imageUrl, c.imageUrl)
     })));
 
@@ -860,6 +862,8 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               ? '/banners/generative-ai.webp'
               : c.id === 'course-cyber-sec'
               ? '/banners/cyber-security.webp'
+              : c.id === 'course-soft-skills'
+              ? '/banners/soft-skills.webp'
               : sanitizeCourseImage(c.thumbnail_url || c.image_url, '/banners/generative-ai.webp'),
             mentorName: c.mentor_name || 'Vaibhav Ahire',
             duration: c.duration || '200+ Hours',
@@ -879,6 +883,8 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 ? '/banners/generative-ai.webp'
                 : mergedList[existingIndex].id === 'course-cyber-sec'
                 ? '/banners/cyber-security.webp'
+                : mergedList[existingIndex].id === 'course-soft-skills'
+                ? '/banners/soft-skills.webp'
                 : formatted.imageUrl
             };
           } else {
