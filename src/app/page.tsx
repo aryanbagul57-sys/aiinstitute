@@ -8,8 +8,7 @@ import {
   ArrowRight, Play, Sparkles, CheckCircle, BookOpen, Users, 
   Trophy, Briefcase, ChevronDown, Star, Lock, MonitorPlay, 
   FileText, Download, UserCheck, Calendar, ShieldCheck, Mail, Phone, User, Loader2,
-  TrendingUp, Target, DollarSign, Zap, CheckCircle2, Award, GraduationCap, X,
-  HelpCircle, MessageCircle, Layers, Code2
+  TrendingUp, Target, DollarSign, Zap, CheckCircle2, Award, GraduationCap, X
 } from 'lucide-react';
 import { LandingNavbar } from '@/components/shared/LandingNavbar';
 import { LandingFooter } from '@/components/shared/LandingFooter';
@@ -72,28 +71,6 @@ export default function LandingPage() {
   const [calcBackground, setCalcBackground] = useState<'12th' | 'college' | 'non_tech' | 'pro'>('college');
   const [calcGoal, setCalcGoal] = useState<'genai' | 'datascience' | 'analyst' | 'wfh'>('genai');
   const [titleIndex, setTitleIndex] = useState(0);
-
-  // KSR Datavizon-Style Track Tabs & FAQ State
-  const [selectedCourseTab, setSelectedCourseTab] = useState<string>('all');
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-
-  const allCoursesList = courses && courses.length > 0 ? courses : SEED_COURSES;
-  const filteredCoursesList = allCoursesList.filter(course => {
-    if (selectedCourseTab === 'all') return true;
-    if (selectedCourseTab === 'ai') {
-      return ['AI & ML', 'Generative AI', 'Data Science', 'Data Analytics'].includes(course.category);
-    }
-    if (selectedCourseTab === 'security') {
-      return ['Cyber Security', 'Information Technology'].includes(course.category);
-    }
-    if (selectedCourseTab === 'business') {
-      return ['Business Analyst', 'Digital Marketing'].includes(course.category);
-    }
-    if (selectedCourseTab === 'soft_skills') {
-      return ['Soft Skills', 'Communication', 'Design & Experience'].includes(course.category);
-    }
-    return true;
-  });
 
   // Quick Contact & Enrollment Form State (Before Login)
   const [contactName, setContactName] = useState('');
@@ -461,7 +438,7 @@ export default function LandingPage() {
       </div>
 
       {/* 1. HERO SECTION */}
-      <section className="relative py-12 sm:py-20 px-4 sm:px-6 overflow-hidden flex items-center border-b border-slate-200 dark:border-slate-800">
+      <section className="relative pt-6 pb-16 sm:pb-24 px-4 sm:px-6 overflow-hidden min-h-[70vh] sm:min-h-[85vh] flex items-center">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-[10%] -right-[5%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-blue-500/15 to-purple-500/15 blur-3xl opacity-70" />
           <div className="absolute -bottom-[10%] -left-[5%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-blue-500/15 to-cyan-500/15 blur-3xl opacity-70" />
@@ -621,56 +598,20 @@ export default function LandingPage() {
       </div>
 
       {/* 2. FEATURED COURSES */}
-      <section id="courses" className="py-24 px-6 bg-white dark:bg-[#0a0f1c] relative z-10 border-b border-slate-200 dark:border-slate-800">
+      <section id="courses" className="py-24 px-6 bg-white dark:bg-[#0a0f1c] relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 block">
-              Industry-Aligned Programs
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">
-              Explore Job-Oriented Career Tracks
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto text-sm sm:text-base">
-              Hands-on live interactive courses with practical capstone projects, personalized mentorship, and 100% placement assistance.
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">Premium Featured Courses</h2>
+            <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto">
+              Our flagship programs designed to take you from beginner to industry-ready professional.
             </p>
-          </div>
-
-          {/* KSR-Style Category Track Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
-            {[
-              { id: 'all', label: 'All Programs', count: allCoursesList.length },
-              { id: 'ai', label: '🤖 AI & Data Science', count: allCoursesList.filter(c => ['AI & ML', 'Generative AI', 'Data Science', 'Data Analytics'].includes(c.category)).length },
-              { id: 'security', label: '🛡️ Cyber Security & IT', count: allCoursesList.filter(c => ['Cyber Security', 'Information Technology'].includes(c.category)).length },
-              { id: 'business', label: '📊 Business Analytics', count: allCoursesList.filter(c => ['Business Analyst', 'Digital Marketing'].includes(c.category)).length },
-              { id: 'soft_skills', label: '💼 Professional Soft Skills', count: allCoursesList.filter(c => ['Soft Skills', 'Communication', 'Design & Experience'].includes(c.category)).length }
-            ].map((tab) => {
-              const isActive = selectedCourseTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setSelectedCourseTab(tab.id)}
-                  className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                    isActive
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 scale-105'
-                      : 'bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                  }`}
-                >
-                  <span>{tab.label}</span>
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-                    isActive ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
-                  }`}>
-                    {tab.count}
-                  </span>
-                </button>
-              );
-            })}
           </div>
 
           <div 
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"
             style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', width: '100%', minHeight: '350px' }}
           >
-            {filteredCoursesList.map((course, idx) => {
+            {(courses && courses.length > 0 ? courses : SEED_COURSES).map((course, idx) => {
               const isUpcoming = isUpcomingCourse(course.id) || isUpcomingCourse(course.title);
               return (
                 <div 
@@ -752,33 +693,24 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3. WHY CHOOSE US & LEARNING BLUEPRINT */}
-      <section id="why-choose" className="py-24 px-6 relative bg-slate-50/50 dark:bg-[#070b16] border-b border-slate-200 dark:border-slate-800">
+      {/* 3. WHY CHOOSE US */}
+      <section id="why-choose" className="py-24 px-6 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 block">
-              Outcome-Driven Learning
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">
-              Why Learn With AI Institute?
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto text-sm sm:text-base">
-              Moving beyond passive video-watching to intensive, live mentor-led sprints, real cloud capstones, and guaranteed interview preparation.
-            </p>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">Why Choose AI Institute?</h2>
           </div>
-
           <motion.div 
             initial="hidden" 
             whileInView="show" 
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {[
-              { icon: MonitorPlay, title: '100% Live Classes', desc: 'Interactive live sessions with live doubt resolution, recorded HD replays, and lifetime curriculum access.' },
-              { icon: FileText, title: 'Production Capstones', desc: 'Build 4+ industry-grade portfolio projects hosted on cloud repositories that top tech companies look for.' },
-              { icon: UserCheck, title: 'AI Mock Interviews', desc: 'Rigorous technical and behavioral rounds with senior engineers, ATS resume revamping, and feedback.' },
-              { icon: Briefcase, title: 'Dedicated Placement Cell', desc: 'Direct corporate referrals, placement drives across 100+ hiring partners, and lifetime career support.' },
+              { icon: MonitorPlay, title: 'Live Classes', desc: 'Interactive sessions with mentors.' },
+              { icon: FileText, title: 'Industry Projects', desc: 'Build real-world AI applications.' },
+              { icon: UserCheck, title: 'Mock Interviews', desc: 'Prepare with industry veterans.' },
+              { icon: Briefcase, title: 'Placement Assistance', desc: 'Guaranteed referral programs.' },
             ].map((feature, idx) => {
               const Icon = feature.icon;
               return (
@@ -786,58 +718,26 @@ export default function LandingPage() {
                   key={idx} 
                   variants={fadeIn}
                   whileHover={{ y: -5 }}
-                  className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200/80 dark:border-slate-800 text-center shadow-lg hover:shadow-xl transition-all"
+                  className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 text-center shadow-lg hover:shadow-xl transition-all"
                 >
                   <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-blue-600 dark:text-blue-400">
                     <Icon className="w-7 h-7" />
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{feature.title}</h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{feature.desc}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{feature.desc}</p>
                 </motion.div>
               )
             })}
           </motion.div>
-
-          {/* KSR-Style 4-Step Career Transformation Blueprint */}
-          <div className="bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-950 rounded-3xl p-8 sm:p-12 text-white border border-blue-500/30 shadow-2xl">
-            <div className="text-center max-w-2xl mx-auto mb-10">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-300 mb-1 block">
-                Structured Pedagogy
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-black text-white">
-                The 4-Step Career Transition Blueprint
-              </h3>
-              <p className="text-xs sm:text-sm text-blue-200/80 mt-2 font-medium">
-                Proven methodology designed to bridge the gap between fresh college graduates, non-IT professionals, and high-paying tech roles.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-              {[
-                { step: '01', title: 'Interactive Foundations', desc: 'Live hands-on training starting from zero in Python, Data, AI architectures, and modern frameworks.' },
-                { step: '02', title: 'Live Capstone Sprints', desc: 'Build and deploy real-world enterprise apps, APIs, models, and databases into your GitHub portfolio.' },
-                { step: '03', title: 'Mock Rounds & ATS Polish', desc: 'Simulated technical interview rounds, system design discussions, and automated resume ATS score optimization.' },
-                { step: '04', title: 'Placement Sprints & Hiring', desc: 'Direct corporate referrals, dedicated placement manager assistance, and interview pipelines until placed.' },
-              ].map((s, i) => (
-                <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative flex flex-col justify-between">
-                  <div>
-                    <span className="text-3xl font-black text-blue-400/40 block mb-3 font-mono">{s.step}</span>
-                    <h4 className="text-base font-bold text-white mb-2">{s.title}</h4>
-                    <p className="text-xs text-blue-100/70 leading-relaxed">{s.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
       {/* 3.5. TOP MENTORS */}
-      <section id="mentors" className="py-24 px-6 bg-slate-50 dark:bg-[#080d1a] relative z-10 border-b border-slate-200 dark:border-slate-800">
+      <section id="mentors" className="py-24 px-6 bg-slate-50 relative z-10 border-y border-slate-200">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">Learn From Industry Experts</h2>
-            <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Learn From Industry Experts</h2>
+            <p className="text-slate-500 font-medium max-w-2xl mx-auto">
               Our mentors bring years of real-world experience from top companies to help you build a successful career.
             </p>
           </div>
@@ -875,9 +775,9 @@ export default function LandingPage() {
                 key={idx}
                 variants={fadeIn}
                 whileHover={{ y: -8 }}
-                className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all text-center group"
+                className="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg hover:shadow-2xl transition-all text-center group"
               >
-                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-6 border-4 border-slate-50 dark:border-slate-800 shadow-inner">
+                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-6 border-4 border-slate-50 shadow-inner">
                   <img 
                     src={mentor.image} 
                     alt={mentor.name} 
@@ -885,8 +785,8 @@ export default function LandingPage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                   />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{mentor.name}</h3>
-                <p className="text-sm text-blue-600 dark:text-blue-400 font-semibold mb-4 min-h-[40px] flex items-center justify-center">
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{mentor.name}</h3>
+                <p className="text-sm text-blue-600 font-semibold mb-4 min-h-[40px] flex items-center justify-center">
                   {mentor.role}
                 </p>
 
@@ -897,7 +797,7 @@ export default function LandingPage() {
       </section>
 
       {/* 4. SUCCESS STORIES */}
-      <section id="testimonials" className="py-16 sm:py-24 px-4 sm:px-6 bg-blue-600 dark:bg-blue-950 text-white relative overflow-hidden border-b-2 border-blue-400/30">
+      <section id="testimonials" className="py-16 sm:py-24 px-4 sm:px-6 bg-blue-600 dark:bg-blue-950 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
         <div className="max-w-7xl mx-auto relative z-10 text-center">
           <h2 className="text-3xl sm:text-4xl font-black mb-4">Proud Moments & Placement Success Stories</h2>
@@ -916,7 +816,6 @@ export default function LandingPage() {
               {
                 name: "Pratik Wagh",
                 qualification: "12th Completed",
-                transition: "Non-IT (12th) ➔ UAE AI Specialist",
                 location: "Placed in UAE 🇦🇪",
                 package: "12 LPA Package",
                 image: "/uploads/pratik_wagh.jpg",
@@ -925,7 +824,6 @@ export default function LandingPage() {
               {
                 name: "Khushal Pandit",
                 qualification: "B.Sc Student",
-                transition: "B.Sc Student ➔ Global Data Engineer",
                 location: "Placed in UAE 🇦🇪",
                 package: "12 LPA Package",
                 image: "/uploads/khushal_pandit.jpg",
@@ -934,7 +832,6 @@ export default function LandingPage() {
               {
                 name: "Saksham Pathade",
                 qualification: "Philippines (WFH)",
-                transition: "Graduate ➔ Remote AI Engineer",
                 location: "Placed in Philippines 🇵🇭",
                 package: "12 LPA Package",
                 image: "/uploads/saksham_pathade.jpg",
@@ -943,7 +840,6 @@ export default function LandingPage() {
               {
                 name: "Chetan Ghorpade",
                 qualification: "Philippines (WFH)",
-                transition: "Fresher ➔ Cloud & IT Specialist",
                 location: "Placed in Philippines 🇵🇭",
                 package: "5 LPA Package",
                 image: "/uploads/chetan_ghorpade.jpg",
@@ -952,11 +848,6 @@ export default function LandingPage() {
             ].map((student, i) => (
               <motion.div key={i} variants={fadeIn} whileHover={{ y: -8 }} className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-3xl text-left flex flex-col justify-between shadow-xl">
                 <div>
-                  <div className="mb-3">
-                    <span className="text-[10px] font-extrabold bg-blue-500/30 text-white border border-blue-400/40 px-2.5 py-1 rounded-full inline-block">
-                      {student.transition}
-                    </span>
-                  </div>
                   <div className="flex gap-4 items-center mb-4">
                     <div className="w-16 h-16 rounded-full bg-slate-900 overflow-hidden border-2 border-white/50 shadow-md shrink-0">
                       <img 
@@ -984,26 +875,6 @@ export default function LandingPage() {
               </motion.div>
             ))}
           </motion.div>
-
-          {/* KSR-Style Trust & Placement Verification Metrics Strip */}
-          <div className="mt-16 pt-8 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-              <div className="text-3xl sm:text-4xl font-black text-white">94%</div>
-              <div className="text-[11px] font-bold text-blue-200 uppercase tracking-wider mt-1">Verified Placement Rate</div>
-            </div>
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-              <div className="text-3xl sm:text-4xl font-black text-white">140%</div>
-              <div className="text-[11px] font-bold text-blue-200 uppercase tracking-wider mt-1">Average Salary Hike</div>
-            </div>
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-              <div className="text-3xl sm:text-4xl font-black text-white">12 LPA</div>
-              <div className="text-[11px] font-bold text-blue-200 uppercase tracking-wider mt-1">Highest Fresher CTC</div>
-            </div>
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-              <div className="text-3xl sm:text-4xl font-black text-white">4.9 / 5</div>
-              <div className="text-[11px] font-bold text-blue-200 uppercase tracking-wider mt-1">Learner Satisfaction</div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -1073,100 +944,8 @@ export default function LandingPage() {
       </section>
 
 
-      {/* 6. FREQUENTLY ASKED QUESTIONS (KSR-STYLE ACCORDION) */}
-      <section id="faq" className="py-24 px-6 bg-slate-50 dark:bg-[#070b16] relative border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 block">
-              Got Questions?
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-xl mx-auto">
-              Everything you need to know about our live classes, placement support, prerequisites, and learning model.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {[
-              {
-                q: "Can I join AI and Data Science courses from a Non-IT or Non-Coding background?",
-                a: "Absolutely! Over 45% of our successful alumni come from non-IT backgrounds (Mechanical, Commerce, BSC, or 12th pass). We teach starting from core programming fundamentals in Python and progress systematically to Generative AI, cloud deployment, and system architectures."
-              },
-              {
-                q: "Are the training sessions live or pre-recorded? What if I miss a session?",
-                a: "All sessions are 100% live and interactive with real-time mentor Q&A. Every live session is recorded in HD and uploaded directly to your student LMS portal within 2 hours, giving you lifetime access to review recordings, code repos, and study guides."
-              },
-              {
-                q: "What kind of 100% Placement & Career Support is provided?",
-                a: "Our dedicated placement cell conducts 1-on-1 resume rebuilding (ATS-optimized), GitHub repository audits, and 5+ mock interviews (both technical coding rounds and HR/behavioral). You get direct access to internal corporate job drives across our 100+ hiring partners."
-              },
-              {
-                q: "Will I work on live industry projects and build a portfolio?",
-                a: "Yes! You will build 4 to 6 industry capstone projects (e.g. End-to-end RAG AI Assistant, Real-time Fraud Detection, Predictive Analytics Dashboard) hosted live on cloud platforms (AWS/Vercel) to showcase directly to hiring managers on your LinkedIn & GitHub."
-              },
-              {
-                q: "Do you offer flexible EMI options or demo class sessions?",
-                a: "Yes, we offer zero-cost EMI plans with easy monthly installments. You can also explore free classroom preview modules and attend an orientation session before making your final enrollment decision."
-              }
-            ].map((faq, idx) => {
-              const isOpen = openFaqIndex === idx;
-              return (
-                <div 
-                  key={idx}
-                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm transition-all"
-                >
-                  <button
-                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <HelpCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
-                      <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
-                        {faq.q}
-                      </span>
-                    </div>
-                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-blue-600' : ''}`} />
-                  </button>
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
-                          {faq.a}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mt-10 text-center">
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              Have another question? Speak to an Academic Counselor directly:
-            </p>
-            <a 
-              href="#enroll-track" 
-              className="inline-flex items-center gap-2 mt-3 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
-            >
-              <span>Get Free 1-on-1 Career Counseling</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* 7. INTERACTIVE AI CAREER PATH FINDER */}
-      <section id="enroll-track" className="py-20 px-6 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-[#0a0f1c] dark:via-[#080d1a] dark:to-[#050811] border-b border-slate-200 dark:border-slate-800">
+      <section className="py-20 px-6 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-[#0a0f1c] dark:via-[#080d1a] dark:to-[#050811] border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 space-y-3">
@@ -1360,24 +1139,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* KSR-Style Floating Academic Counselor / WhatsApp Support Button */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
-        <a
-          href="https://wa.me/919916961234?text=Hi%20AI%20Institute%2C%20I%20am%20interested%20in%20upcoming%20live%20batches%20and%20placement%20details."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-3 rounded-full shadow-2xl hover:shadow-emerald-500/30 transition-all hover:scale-105 group font-bold text-xs"
-        >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-200 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
-          </span>
-          <MessageCircle className="w-4 h-4" />
-          <span className="hidden sm:inline">Talk to Counselor</span>
-          <span className="sm:hidden">Counselor</span>
-        </a>
-      </div>
 
       <LandingFooter />
       <AIAssistant />

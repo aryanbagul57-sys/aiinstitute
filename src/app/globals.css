@@ -191,50 +191,11 @@ input::placeholder, textarea::placeholder {
   box-shadow: 0 0 40px -5px rgba(59, 130, 246, 0.25);
 }
 
-html {
+html, body {
   overflow-x: hidden;
+  overscroll-behavior: none;
   overscroll-behavior-y: none;
-  scroll-padding-top: 6.5rem;
-}
-
-body {
-  overflow-x: hidden;
-  overscroll-behavior-y: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Stabilized container boundaries to prevent layout shifts */
-main, section {
-  contain: paint layout;
-}
-
-/* Hardware accelerated smooth transforms */
-.hardware-accelerated {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform;
-}
-
-/* Premium Card Hover Effect */
-.hover-lift {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-4px);
-}
-
-/* Subtle Shimmer Animation */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
-  background-size: 200% 100%;
-  animation: shimmer 3s infinite;
+  scroll-padding-top: 5rem;
 }
 
 /* ─── Infinite Marquee (right → left) for Tie-Ups section ─── */
