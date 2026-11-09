@@ -193,15 +193,20 @@ input::placeholder, textarea::placeholder {
 
 html {
   overflow-x: hidden;
-  scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  overscroll-behavior-y: none;
+  scroll-padding-top: 6.5rem;
 }
 
 body {
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  overscroll-behavior-y: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Stabilized container boundaries to prevent layout shifts */
+main, section {
+  contain: paint layout;
 }
 
 /* Hardware accelerated smooth transforms */

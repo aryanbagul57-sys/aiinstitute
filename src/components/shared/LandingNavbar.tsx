@@ -77,12 +77,7 @@ export const LandingNavbar: React.FC<LandingNavbarProps> = ({ onAccessPortal, cu
   const totalResults = matchedMentors.length + matchedCourses.length;
 
   return (
-    <motion.header 
-      initial={{ y: -100 }} 
-      animate={{ y: 0 }} 
-      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#080d1a]/90 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60 transition-all"
-    >
+    <header className="fixed top-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#080d1a]/95 backdrop-blur-md border-b-2 border-slate-200 dark:border-slate-800 shadow-xs">
       {/* KSR-Style Top Announcement / Batch Alert Bar */}
       <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white text-[11px] font-bold py-1.5 px-4 shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
@@ -374,6 +369,6 @@ export const LandingNavbar: React.FC<LandingNavbarProps> = ({ onAccessPortal, cu
         onClose={() => setIsEditModalOpen(false)} 
         currentUser={currentUser} 
       />
-    </motion.header>
+    </header>
   );
 };

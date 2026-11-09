@@ -461,7 +461,7 @@ export default function LandingPage() {
       </div>
 
       {/* 1. HERO SECTION */}
-      <section className="relative pt-6 pb-16 sm:pb-24 px-4 sm:px-6 overflow-hidden min-h-[70vh] sm:min-h-[85vh] flex items-center">
+      <section className="relative py-12 sm:py-20 px-4 sm:px-6 overflow-hidden flex items-center border-b border-slate-200 dark:border-slate-800">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-[10%] -right-[5%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-blue-500/15 to-purple-500/15 blur-3xl opacity-70" />
           <div className="absolute -bottom-[10%] -left-[5%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-blue-500/15 to-cyan-500/15 blur-3xl opacity-70" />
@@ -621,7 +621,7 @@ export default function LandingPage() {
       </div>
 
       {/* 2. FEATURED COURSES */}
-      <section id="courses" className="py-24 px-6 bg-white dark:bg-[#0a0f1c] relative z-10">
+      <section id="courses" className="py-24 px-6 bg-white dark:bg-[#0a0f1c] relative z-10 border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
             <span className="text-xs font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 block">
@@ -753,7 +753,7 @@ export default function LandingPage() {
       </section>
 
       {/* 3. WHY CHOOSE US & LEARNING BLUEPRINT */}
-      <section id="why-choose" className="py-24 px-6 relative bg-slate-50/50 dark:bg-[#070b16]">
+      <section id="why-choose" className="py-24 px-6 relative bg-slate-50/50 dark:bg-[#070b16] border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-xs font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 block">
@@ -833,11 +833,11 @@ export default function LandingPage() {
       </section>
 
       {/* 3.5. TOP MENTORS */}
-      <section id="mentors" className="py-24 px-6 bg-slate-50 relative z-10 border-y border-slate-200">
+      <section id="mentors" className="py-24 px-6 bg-slate-50 dark:bg-[#080d1a] relative z-10 border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Learn From Industry Experts</h2>
-            <p className="text-slate-500 font-medium max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">Learn From Industry Experts</h2>
+            <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto">
               Our mentors bring years of real-world experience from top companies to help you build a successful career.
             </p>
           </div>
@@ -875,9 +875,9 @@ export default function LandingPage() {
                 key={idx}
                 variants={fadeIn}
                 whileHover={{ y: -8 }}
-                className="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg hover:shadow-2xl transition-all text-center group"
+                className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all text-center group"
               >
-                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-6 border-4 border-slate-50 shadow-inner">
+                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-6 border-4 border-slate-50 dark:border-slate-800 shadow-inner">
                   <img 
                     src={mentor.image} 
                     alt={mentor.name} 
@@ -885,8 +885,8 @@ export default function LandingPage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                   />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{mentor.name}</h3>
-                <p className="text-sm text-blue-600 font-semibold mb-4 min-h-[40px] flex items-center justify-center">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{mentor.name}</h3>
+                <p className="text-sm text-blue-600 dark:text-blue-400 font-semibold mb-4 min-h-[40px] flex items-center justify-center">
                   {mentor.role}
                 </p>
 
@@ -897,7 +897,7 @@ export default function LandingPage() {
       </section>
 
       {/* 4. SUCCESS STORIES */}
-      <section id="testimonials" className="py-16 sm:py-24 px-4 sm:px-6 bg-blue-600 dark:bg-blue-950 text-white relative overflow-hidden">
+      <section id="testimonials" className="py-16 sm:py-24 px-4 sm:px-6 bg-blue-600 dark:bg-blue-950 text-white relative overflow-hidden border-b-2 border-blue-400/30">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
         <div className="max-w-7xl mx-auto relative z-10 text-center">
           <h2 className="text-3xl sm:text-4xl font-black mb-4">Proud Moments & Placement Success Stories</h2>
@@ -1074,7 +1074,7 @@ export default function LandingPage() {
 
 
       {/* 6. FREQUENTLY ASKED QUESTIONS (KSR-STYLE ACCORDION) */}
-      <section id="faq" className="py-24 px-6 bg-slate-50 dark:bg-[#070b16] relative border-t border-slate-200 dark:border-slate-800">
+      <section id="faq" className="py-24 px-6 bg-slate-50 dark:bg-[#070b16] relative border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-xs font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 block">
@@ -1166,7 +1166,7 @@ export default function LandingPage() {
       </section>
 
       {/* 7. INTERACTIVE AI CAREER PATH FINDER */}
-      <section id="enroll-track" className="py-20 px-6 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-[#0a0f1c] dark:via-[#080d1a] dark:to-[#050811] border-t border-slate-200 dark:border-slate-800">
+      <section id="enroll-track" className="py-20 px-6 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-[#0a0f1c] dark:via-[#080d1a] dark:to-[#050811] border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 space-y-3">
